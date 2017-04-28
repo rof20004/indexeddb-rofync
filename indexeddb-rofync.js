@@ -71,7 +71,9 @@ IndexedDbRofync.prototype.initializeDb = function () {
 			this.tables.forEach(table => {
 				if (!this.db.objectStoreNames.contains(table.name)) {
 					let tableObject = this.db.createObjectStore(table.name, { keyPath: table.keyPath, autoIncrement: true })
-					tableObject.createIndex(table.indexName, table.indexValue, { unique: false })
+					table.indexes.forEach(index => {
+						tableObject.createIndex(index.name, index.value, { unique: index.isUnique })
+					})
 				}
 			})
 
